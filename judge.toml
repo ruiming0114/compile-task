@@ -1,14 +1,14 @@
 # -- judge.toml --
-# Õâ¸öÎÄ¼ş¸ºÔğ¸æËßÆÀ²â¼§ÄãĞèÒªÔõÃ´ÆÀ²âÄãµÄ³ÌĞò
+# è¿™ä¸ªæ–‡ä»¶è´Ÿè´£å‘Šè¯‰è¯„æµ‹å§¬ä½ éœ€è¦æ€ä¹ˆè¯„æµ‹ä½ çš„ç¨‹åº
 
-# ÎÒÃÇµÄÆÀ²â±êÊ¶·ûÊÇ pascal_lex
+# æˆ‘ä»¬çš„è¯„æµ‹æ ‡è¯†ç¬¦æ˜¯ pascal_lex
 [jobs.pascal_lex]
 
-# Ê¹ÓÃ Dockerfile À´Ô´£¬Â·¾¶¾ÍÊÇµ±Ç°ÎÄ¼ş¼Ğ£¬¾µÏñÃû³ÆÊÇ my-pascal-lexer
+# ä½¿ç”¨ Dockerfile æ¥æºï¼Œè·¯å¾„å°±æ˜¯å½“å‰æ–‡ä»¶å¤¹ï¼Œé•œåƒåç§°æ˜¯ my-pascal-lexer
 image = { source = "dockerfile", path = "./01-pascal_lex/src", tag = "my-pascal-lexer" }
 
-# ¼ÙÈçÄãÓÃµÄÊÇ Java
+# å‡å¦‚ä½ ç”¨çš„æ˜¯ Java
 run = [
-  # ÔËĞĞ³ÌĞò
+  # è¿è¡Œç¨‹åº
   "java Main $input",
 ]
