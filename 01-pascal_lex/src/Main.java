@@ -84,7 +84,7 @@ public class Main {
                     case ':':
                         Cat(current);
                         getChar();
-                        if (current != '='){
+                        if (current == '='){
                             Cat(current);
                         }
                         else {
