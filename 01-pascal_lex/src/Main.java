@@ -94,6 +94,7 @@ public class Main {
                         clearToken();
                         break;
                     default:
+                        System.out.println("Unknown");
                         break all;
                 }
             }
