@@ -83,16 +83,21 @@ public class Main {
                         break;
                     case ':':
                         Cat(current);
-                        getChar();
-                        if (current == '='){
-                            Cat(current);
+                        if(getChar() != -1){
+                            if (current == '='){
+                                Cat(current);
+                            }
+                            else {
+                                unGetChar();
+                            }
+                            System.out.println(Utils.toCalculator(token));
+                            clearToken();
+                            break;
                         }
                         else {
-                            unGetChar();
+                            System.out.println(Utils.toCalculator(token));
+                            break all;
                         }
-                        System.out.println(Utils.toCalculator(token));
-                        clearToken();
-                        break;
                     default:
                         System.out.println("Unknown");
                         break all;
