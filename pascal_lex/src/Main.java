@@ -1,5 +1,3 @@
-package pascal_lex;
-
 import java.io.*;
 
 public class Main {
