@@ -1,3 +1,5 @@
+package pascal_lex;
+
 import java.util.HashMap;
 import java.util.Map;
 
