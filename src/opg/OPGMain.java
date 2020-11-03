@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
 
-public class Main {
+public class OPGMain {
     public static Map<Character,Integer> location =  new HashMap<>();
     public static int[][] matrix = {
             {1,-1,-1,1,-1,1},
