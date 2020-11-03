@@ -10,10 +10,10 @@ public class OPGMain {
     public static int[][] matrix = {
             {1,-1,-1,1,-1,1},
             {1,1,-1,1,-1,1},
-            {-1,-1,-1,0,-1,-2},
+            {-1,-1,-1,0,-1,1},
             {1,1,-2,1,-2,1},
             {1,1,-2,1,-2,1},
-            {-1,-1,-1,-2,-1,-3}
+            {-1,-1,-1,-1,-1,-3}
     };
     public static Stack<Character> stack = new Stack<>();
     public static char[] input = null;
