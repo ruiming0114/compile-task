@@ -21,5 +21,5 @@ image = { source = "dockerfile", path = "./src/opg/" , tag = "my-opg" }
 # 假如你用的是 Java
 run = [
   # 运行程序
-  "cat $input | java Main",
+   "java Main $input",
 ]
