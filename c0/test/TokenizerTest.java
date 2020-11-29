@@ -13,7 +13,7 @@ public class TokenizerTest {
 
     @Test
     public void lexUIntOrDoubleTest() throws FileNotFoundException, TokenizeError {
-        Scanner scanner = new Scanner(new File("./test/input.txt"));
+        Scanner scanner = new Scanner(new File("./c0/test/input.txt"));
         TokenIterator iterator = new TokenIterator(scanner);
         Tokenizer tokenizer = new Tokenizer(iterator);
         Token token = tokenizer.nextToken();
