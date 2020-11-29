@@ -4,8 +4,7 @@ import error.AnalyseError;
 
 public class AsExpr extends Expr {
     public Expr expr;
-    public int type;
-    // 0 for int,1 for void,2 for double
+    public String type;
 
     public AsExpr(Expr expr,String value) throws AnalyseError {
         super();
@@ -13,13 +12,9 @@ public class AsExpr extends Expr {
         this.expr = expr;
         switch (value) {
             case "int":
-                this.type = 0;
-                break;
             case "void":
-                this.type = 1;
-                break;
             case "double":
-                this.type = 2;
+                this.type = value;
                 break;
             default:
                 throw new AnalyseError();
