@@ -1,6 +1,7 @@
 package analyser;
 
 import analyser.expr.*;
+import analyser.statement.*;
 import error.AnalyseError;
 import error.TokenizeError;
 import tokenizer.Token;
@@ -65,11 +66,10 @@ public class Analyser {
         return tokenizer.nextToken();
     }
 
-    private void expect(TokenType tokenType) throws TokenizeError, AnalyseError {
+    private Token expect(TokenType tokenType) throws TokenizeError, AnalyseError {
         Token token = peekToken();
         if (token.getTokenType() == tokenType){
-            nextToken();
-            return;
+            return nextToken();
         }
         throw new AnalyseError();
     }
@@ -155,6 +155,7 @@ public class Analyser {
         else if (peek.getTokenType() == TokenType.Lparen){
             expect(TokenType.Lparen);
             if (peekToken().getTokenType() == TokenType.Rparen){
+                expect(TokenType.Rparen);
                 return new CallExpr(token.getValue(),null);
             }
             else {
@@ -171,5 +172,147 @@ public class Analyser {
         else {
             return new IdentExpr(token.getValue());
         }
+    }
+
+    public Stmt AnalyseStmt() throws TokenizeError, AnalyseError {
+        Token peek = peekToken();
+        if (peek.getTokenType() == TokenType.Let || peek.getTokenType() == TokenType.Const){
+            return AnalyseDeclStmt();
+        }
+        else if (peek.getTokenType() == TokenType.If){
+            return AnalyseIfStmt();
+        }
+        else if (peek.getTokenType() == TokenType.While){
+            return AnalyseWhileStmt();
+        }
+        else if (peek.getTokenType() == TokenType.Break){
+            return AnalyseBreakStmt();
+        }
+        else if (peekToken().getTokenType() == TokenType.Continue){
+            return AnalyseContinueStmt();
+        }
+        else if (peekToken().getTokenType() == TokenType.Return){
+            return AnalyseReturnStmt();
+        }
+        else if (peekToken().getTokenType() == TokenType.Lbrace){
+            return AnalyseBlockStmt();
+        }
+        else if (peekToken().getTokenType() == TokenType.Semicolon){
+            return AnalyseEmptyStmt();
+        }
+        else {
+            return AnalyseExprStmt();
+        }
+    }
+
+    private Stmt AnalyseExprStmt() throws TokenizeError, AnalyseError {
+        Expr expr = AnalyseExpr();
+        expect(TokenType.Semicolon);
+        return new ExprStmt(expr);
+    }
+
+    private Stmt AnalyseDeclStmt() throws TokenizeError, AnalyseError {
+        Token peek = peekToken();
+        if (peek.getTokenType() == TokenType.Let){
+            expect(TokenType.Let);
+            Object ident = expect(TokenType.Ident).getValue();
+            expect(TokenType.Colon);
+            String ty = AnalyseTy();
+            if (peekToken().getTokenType() == TokenType.Assign){
+                expect(TokenType.Assign);
+                Expr expr = AnalyseExpr();
+                expect(TokenType.Semicolon);
+                return new DeclStmt("let",ident,ty,expr);
+            }
+            else {
+                expect(TokenType.Semicolon);
+                return new DeclStmt("let",ident,ty);
+            }
+        }
+        else {
+            expect(TokenType.Const);
+            Object ident = expect(TokenType.Ident).getValue();
+            expect(TokenType.Colon);
+            String ty = AnalyseTy();
+            expect(TokenType.Assign);
+            Expr expr = AnalyseExpr();
+            expect(TokenType.Semicolon);
+            return new DeclStmt("const",ident,ty,expr);
+        }
+    }
+
+    private String AnalyseTy() throws TokenizeError, AnalyseError {
+        String value = (String) expect(TokenType.Ident).getValue();
+        if ("int".equals(value) || "double".equals(value) || "void".equals(value)) {
+            return value;
+        }
+        throw new AnalyseError();
+    }
+
+    private Stmt AnalyseBlockStmt() throws TokenizeError, AnalyseError {
+        expect(TokenType.Lbrace);
+        ArrayList<Stmt> stmts = new ArrayList<>();
+        while (peekToken().getTokenType() != TokenType.Rbrace){
+            stmts.add(AnalyseStmt());
+        }
+        expect(TokenType.Rbrace);
+        return new BlockStmt(stmts);
+    }
+
+    private Stmt AnalyseEmptyStmt() throws TokenizeError, AnalyseError {
+        expect(TokenType.Semicolon);
+        return new EmptyStmt();
+    }
+
+    private Stmt AnalyseReturnStmt() throws TokenizeError, AnalyseError {
+        expect(TokenType.Return);
+        if (peekToken().getTokenType() == TokenType.Semicolon){
+            expect(TokenType.Semicolon);
+            return new ReturnStmt();
+        }
+        else {
+            Expr expr = AnalyseExpr();
+            expect(TokenType.Semicolon);
+            return new ReturnStmt(expr);
+        }
+    }
+
+    private Stmt AnalyseWhileStmt() throws TokenizeError, AnalyseError {
+        expect(TokenType.While);
+        Expr expr = AnalyseExpr();
+        BlockStmt blockStmt = (BlockStmt) AnalyseBlockStmt();
+        return new WhileStmt(expr,blockStmt);
+    }
+
+    private Stmt AnalyseIfStmt() throws TokenizeError, AnalyseError {
+        expect(TokenType.If);
+        Expr condition = AnalyseExpr();
+        BlockStmt ifBlock = (BlockStmt) AnalyseBlockStmt();
+        if (peekToken().getTokenType() == TokenType.Else){
+            expect(TokenType.Else);
+            if (peekToken().getTokenType() == TokenType.Lbrace){
+                BlockStmt elseBlock = (BlockStmt) AnalyseBlockStmt();
+                return new IfStmt(condition,ifBlock,elseBlock);
+            }
+            else {
+                IfStmt ifStmt = (IfStmt) AnalyseIfStmt();
+                return new IfStmt(condition,ifBlock,ifStmt);
+            }
+        }
+        else {
+            return new IfStmt(condition,ifBlock);
+        }
+    }
+
+    private Stmt AnalyseBreakStmt() throws TokenizeError, AnalyseError {
+        expect(TokenType.Break);
+        expect(TokenType.Semicolon);
+        return new BreakStmt();
+    }
+
+    private Stmt AnalyseContinueStmt() throws TokenizeError, AnalyseError {
+        expect(TokenType.Continue);
+        expect(TokenType.Semicolon);
+        return new ContinueStmt();
     }
 }

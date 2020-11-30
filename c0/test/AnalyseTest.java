@@ -17,6 +17,6 @@ public class AnalyseTest {
         TokenIterator iterator = new TokenIterator(scanner);
         Tokenizer tokenizer = new Tokenizer(iterator);
         Analyser analyser = new Analyser(tokenizer);
-        System.out.println(analyser.AnalyseExpr());
+        System.out.println(analyser.AnalyseStmt());
     }
 }
