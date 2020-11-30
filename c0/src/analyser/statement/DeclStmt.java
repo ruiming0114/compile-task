@@ -5,25 +5,25 @@ import error.AnalyseError;
 
 public class DeclStmt extends Stmt {
 
-    public String kind;    //let or const
+    public Boolean cons;
     public Object ident;
     public String type;
     public Expr expr;
 
 
-    public DeclStmt(String kind,Object ident,String type) throws AnalyseError {
+    public DeclStmt(Boolean cons,Object ident,String type) throws AnalyseError {
         super(StmtType.Decl_Stmt);
-        if (kind.equals("const")){
+        if (cons){
             throw new AnalyseError();
         }
-        this.kind = kind;
+        this.cons = false;
         this.ident = ident;
         this.type = type;
     }
 
-    public DeclStmt(String kind,Object ident,String type,Expr expr){
+    public DeclStmt(Boolean cons,Object ident,String type,Expr expr){
         super(StmtType.Decl_Stmt);
-        this.kind = kind;
+        this.cons = cons;
         this.ident = ident;
         this.type = type;
         this.expr = expr;
@@ -31,6 +31,6 @@ public class DeclStmt extends Stmt {
 
     @Override
     public String toString() {
-        return super.toString() + "kind: "+kind +"\n" + "ident: "+ ident +"\n" + "type: " +type + "\n" + "expr: " +expr ;
+        return super.toString() + "isConst: "+cons +"\n" + "ident: "+ ident +"\n" + "type: " +type + "\n" + "expr: " +expr ;
     }
 }

@@ -222,11 +222,11 @@ public class Analyser {
                 expect(TokenType.Assign);
                 Expr expr = AnalyseExpr();
                 expect(TokenType.Semicolon);
-                return new DeclStmt("let",ident,ty,expr);
+                return new DeclStmt(false,ident,ty,expr);
             }
             else {
                 expect(TokenType.Semicolon);
-                return new DeclStmt("let",ident,ty);
+                return new DeclStmt(false,ident,ty);
             }
         }
         else {
@@ -237,7 +237,7 @@ public class Analyser {
             expect(TokenType.Assign);
             Expr expr = AnalyseExpr();
             expect(TokenType.Semicolon);
-            return new DeclStmt("const",ident,ty,expr);
+            return new DeclStmt(true,ident,ty,expr);
         }
     }
 
