@@ -1,4 +1,5 @@
 import analyser.Analyser;
+import analyser.program.Program;
 import error.AnalyseError;
 import error.TokenizeError;
 import org.junit.Test;
@@ -17,6 +18,7 @@ public class AnalyseTest {
         TokenIterator iterator = new TokenIterator(scanner);
         Tokenizer tokenizer = new Tokenizer(iterator);
         Analyser analyser = new Analyser(tokenizer);
-        System.out.println(analyser.AnalyseStmt());
+        Program program  = analyser.AnalyseProgram();
+        System.out.println(program);
     }
 }

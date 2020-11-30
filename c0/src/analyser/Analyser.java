@@ -1,6 +1,9 @@
 package analyser;
 
 import analyser.expr.*;
+import analyser.function.Function;
+import analyser.function.FunctionParam;
+import analyser.program.Program;
 import analyser.statement.*;
 import error.AnalyseError;
 import error.TokenizeError;
@@ -89,24 +92,32 @@ public class Analyser {
         Stack<Expr> exprStack = new Stack<>();
         exprStack.push(expr1);
         Token peek = peekToken();
-        while (operatorList.contains(peek.getTokenType())){
-            if (operatorStack.isEmpty()){
-                operatorStack.push(nextToken().getTokenType());
+        while (true){
+            if (operatorList.contains(peek.getTokenType())){
+                if (operatorStack.isEmpty()){
+                    operatorStack.push(nextToken().getTokenType());
+                }
+                else if (matrix[location.get(operatorStack.peek())][location.get(peek.getTokenType())] == 1){
+                    while (!operatorStack.isEmpty() && matrix[location.get(operatorStack.peek())][location.get(peek.getTokenType())] == 1){
+                        OperatorExpr expr = new OperatorExpr(exprStack.pop(),operatorStack.pop(),exprStack.pop());
+                        exprStack.push(expr);
+                    }
+                    operatorStack.push(nextToken().getTokenType());
+                }
+                else {
+                    operatorStack.push(nextToken().getTokenType());
+                }
+                exprStack.push(AnalyseUnaryExpr());
+                peek = peekToken();
             }
-            else if (matrix[location.get(operatorStack.peek())][location.get(peek.getTokenType())] == 1){
-                while (!operatorStack.isEmpty() && matrix[location.get(operatorStack.peek())][location.get(peek.getTokenType())] == 1){
+            else {
+                while (!operatorStack.isEmpty()){
                     OperatorExpr expr = new OperatorExpr(exprStack.pop(),operatorStack.pop(),exprStack.pop());
                     exprStack.push(expr);
                 }
-                operatorStack.push(nextToken().getTokenType());
+                return exprStack.pop();
             }
-            else {
-                operatorStack.push(nextToken().getTokenType());
-            }
-            exprStack.push(AnalyseUnaryExpr());
-            peek = peekToken();
         }
-        return new OperatorExpr(exprStack.pop(),operatorStack.pop(),exprStack.pop());
     }
 
     private Expr AnalyseUnaryExpr() throws TokenizeError, AnalyseError {
@@ -314,5 +325,53 @@ public class Analyser {
         expect(TokenType.Continue);
         expect(TokenType.Semicolon);
         return new ContinueStmt();
+    }
+
+    private FunctionParam AnalyseFunctionParam() throws TokenizeError, AnalyseError {
+        boolean isConst = false;
+        if (peekToken().getTokenType() == TokenType.Const){
+            expect(TokenType.Const);
+            isConst = true;
+        }
+        Object ident = expect(TokenType.Ident).getValue();
+        expect(TokenType.Colon);
+        String ty = AnalyseTy();
+        return new FunctionParam(isConst,ident,ty);
+    }
+
+    public Function AnalyseFunction() throws TokenizeError, AnalyseError {
+        expect(TokenType.Fn);
+        Object name = expect(TokenType.Ident).getValue();
+        expect(TokenType.Lparen);
+        ArrayList<FunctionParam> params = new ArrayList<>();
+        if (peekToken().getTokenType() != TokenType.Rparen) {
+            params.add(AnalyseFunctionParam());
+            while (peekToken().getTokenType() == TokenType.Comma) {
+                expect(TokenType.Comma);
+                params.add(AnalyseFunctionParam());
+            }
+        }
+        expect(TokenType.Rparen);
+        expect(TokenType.Arrow);
+        String ty = AnalyseTy();
+        BlockStmt stmt = (BlockStmt) AnalyseBlockStmt();
+        return new Function(name,params,ty,stmt);
+    }
+
+    public Program AnalyseProgram() throws TokenizeError, AnalyseError {
+        ArrayList<Object> list = new ArrayList<>();
+        while (peekToken().getTokenType() != TokenType.EOF){
+            Token peek = peekToken();
+            if (peek.getTokenType() == TokenType.Let || peek.getTokenType() == TokenType.Const){
+                list.add(AnalyseDeclStmt());
+            }
+            else if (peek.getTokenType() == TokenType.Fn){
+                list.add(AnalyseFunction());
+            }
+            else {
+                throw new AnalyseError();
+            }
+        }
+        return new Program(list);
     }
 }
