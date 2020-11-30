@@ -5,13 +5,13 @@ import error.AnalyseError;
 
 public class DeclStmt extends Stmt {
 
-    public Boolean cons;
+    public boolean cons;
     public Object ident;
     public String type;
     public Expr expr;
 
 
-    public DeclStmt(Boolean cons,Object ident,String type) throws AnalyseError {
+    public DeclStmt(boolean cons,Object ident,String type) throws AnalyseError {
         super(StmtType.Decl_Stmt);
         if (cons){
             throw new AnalyseError();
@@ -21,7 +21,7 @@ public class DeclStmt extends Stmt {
         this.type = type;
     }
 
-    public DeclStmt(Boolean cons,Object ident,String type,Expr expr){
+    public DeclStmt(boolean cons,Object ident,String type,Expr expr){
         super(StmtType.Decl_Stmt);
         this.cons = cons;
         this.ident = ident;
