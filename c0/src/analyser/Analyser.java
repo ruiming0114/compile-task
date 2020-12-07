@@ -5,8 +5,10 @@ import analyser.function.Function;
 import analyser.function.FunctionParam;
 import analyser.program.Program;
 import analyser.statement.*;
+import analyser.symbol.SymbolTable;
 import error.AnalyseError;
 import error.TokenizeError;
+import instruction.Instruction;
 import tokenizer.Token;
 import tokenizer.TokenType;
 import tokenizer.Tokenizer;
@@ -16,6 +18,8 @@ import java.util.*;
 public class Analyser {
 
     Tokenizer tokenizer;
+    public ArrayList<Instruction> instructions;
+    public SymbolTable symbolTable;
 
     Token peekedToken = null;
 
@@ -51,6 +55,8 @@ public class Analyser {
 
     public Analyser(Tokenizer tokenizer){
         this.tokenizer = tokenizer;
+        this.instructions = new ArrayList<>();
+        this.symbolTable = new SymbolTable();
     }
 
     private Token peekToken() throws TokenizeError {
@@ -151,7 +157,7 @@ public class Analyser {
         return new GroupExpr(expr);
     }
 
-    private Expr AnalyseLiteralExpr() throws TokenizeError {
+    private Expr AnalyseLiteralExpr() throws TokenizeError, AnalyseError {
         Token token = nextToken();
         return new LiteralExpr(token.getTokenType(),token.getValue());
     }
@@ -373,5 +379,10 @@ public class Analyser {
             }
         }
         return new Program(list);
+    }
+
+    public void parse() throws TokenizeError, AnalyseError {
+        Program program = AnalyseProgram();
+        program.generate(instructions,symbolTable);
     }
 }

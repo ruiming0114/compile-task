@@ -1,13 +1,19 @@
 package analyser.statement;
 
 import analyser.expr.Expr;
+import analyser.expr.ValueType;
+import analyser.symbol.SymbolTable;
 import error.AnalyseError;
+import instruction.Instruction;
+import instruction.Operation;
+
+import java.util.ArrayList;
 
 public class DeclStmt extends Stmt {
 
     public boolean cons;
     public Object ident;
-    public String type;
+    public ValueType type;
     public Expr expr;
 
 
@@ -18,15 +24,64 @@ public class DeclStmt extends Stmt {
         }
         this.cons = false;
         this.ident = ident;
-        this.type = type;
+        switch (type){
+            case "int":
+                this.type = ValueType.Int;
+                break;
+            case "double":
+                this.type = ValueType.Double;
+                break;
+            default:
+                throw new AnalyseError();
+        }
     }
 
-    public DeclStmt(boolean cons,Object ident,String type,Expr expr){
+    public DeclStmt(boolean cons,Object ident,String type,Expr expr) throws AnalyseError {
         super(StmtType.Decl_Stmt);
         this.cons = cons;
         this.ident = ident;
-        this.type = type;
         this.expr = expr;
+        switch (type){
+            case "int":
+                this.type = ValueType.Int;
+                break;
+            case "double":
+                this.type = ValueType.Double;
+                break;
+            default:
+                throw new AnalyseError();
+        }
+    }
+
+    @Override
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable) throws AnalyseError {
+        String name = (String) ident;
+        if (symbolTable.isContain(name)){
+            throw new AnalyseError();
+        }
+        if(cons){
+            symbolTable.addSymbol(name,true,true,type);
+            instructions.add(new Instruction(Operation.loca,symbolTable.getSymbol(name).getStackOffset()));
+            expr.generate(instructions,symbolTable);
+            if (expr.valueType != type){
+                throw new AnalyseError();
+            }
+            instructions.add(new Instruction(Operation.store64));
+        }
+        else {
+            if (expr == null){
+                symbolTable.addSymbol(name,false,false,type);
+            }
+            else {
+                symbolTable.addSymbol(name,false,true,type);
+                instructions.add(new Instruction(Operation.loca,symbolTable.getSymbol(name).getStackOffset()));
+                expr.generate(instructions,symbolTable);
+                if (expr.valueType != type){
+                    throw new AnalyseError();
+                }
+                instructions.add(new Instruction(Operation.store64));
+            }
+        }
     }
 
     @Override

@@ -2,8 +2,9 @@ package analyser.program;
 
 import analyser.function.Function;
 import analyser.statement.DeclStmt;
-import analyser.statement.Stmt;
+import analyser.symbol.SymbolTable;
 import error.AnalyseError;
+import instruction.Instruction;
 
 import java.util.ArrayList;
 
@@ -17,6 +18,9 @@ public class Program {
             }
         }
         this.list = list;
+    }
+
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable){
     }
 
     @Override

@@ -1,5 +1,12 @@
 package analyser.expr;
 
+import analyser.symbol.SymbolTable;
+import error.AnalyseError;
+import instruction.Instruction;
+import instruction.Operation;
+
+import java.util.ArrayList;
+
 public class NegateExpr extends Expr {
     public Expr expr;
 
@@ -7,6 +14,12 @@ public class NegateExpr extends Expr {
         super();
         super.exprType = ExprType.Negate_Expr;
         this.expr = expr;
+    }
+
+    @Override
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable) throws AnalyseError {
+        this.valueType = expr.valueType;
+        instructions.add(new Instruction(Operation.negi));
     }
 
     @Override

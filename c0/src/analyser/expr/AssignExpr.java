@@ -1,5 +1,13 @@
 package analyser.expr;
 
+import analyser.symbol.SymbolEntry;
+import analyser.symbol.SymbolTable;
+import error.AnalyseError;
+import instruction.Instruction;
+import instruction.Operation;
+
+import java.util.ArrayList;
+
 public class AssignExpr extends Expr {
     public Object ident;
     public Expr expr;
@@ -11,6 +19,21 @@ public class AssignExpr extends Expr {
         this.expr = expr;
     }
 
+    @Override
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable) throws AnalyseError {
+        this.valueType = ValueType.Void;
+        SymbolEntry symbolEntry = symbolTable.getSymbol((String) ident);
+        if (symbolEntry.isConstant()){
+            throw new AnalyseError();
+        }
+        instructions.add(new Instruction(Operation.loca,symbolEntry.getStackOffset()));
+        expr.generate(instructions,symbolTable);
+        if (expr.valueType != symbolEntry.getType()){
+            throw new AnalyseError();
+        }
+        instructions.add(new Instruction(Operation.store64));
+        symbolEntry.setInitialized(true);
+    }
 
     @Override
     public String toString() {
