@@ -26,8 +26,9 @@ public class AnalyseTest {
         Analyser analyser = new Analyser(tokenizer);
         Program program = analyser.AnalyseProgram();
         program.generate();
-        System.out.println(((Function) (program.list.get(0))).instructions);
-        System.out.println(((Function) (program.list.get(0))).symbolTable);
+        System.out.println(program.globalInstructions);
+        System.out.println(((Function) (program.list.get(1))).instructions);
+        System.out.println(((Function) (program.list.get(1))).symbolTable);
     }
 
     @Test

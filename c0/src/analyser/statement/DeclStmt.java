@@ -62,7 +62,12 @@ public class DeclStmt extends Stmt {
         }
         if(cons){
             symbolTable.addSymbol(name,true,true, SymbolType.Var,type,level);
-            instructions.add(new Instruction(Operation.loca,symbolTable.getSymbol(name).getStackOffset()));
+            if (level==0){
+                instructions.add(new Instruction(Operation.globa,symbolTable.getSymbol(name).getStackOffset()));
+            }
+            else {
+                instructions.add(new Instruction(Operation.loca,symbolTable.getSymbol(name).getStackOffset()));
+            }
             expr.generate(instructions,symbolTable,level);
             if (expr.valueType != type){
                 throw new AnalyseError();
@@ -75,7 +80,12 @@ public class DeclStmt extends Stmt {
             }
             else {
                 symbolTable.addSymbol(name,false,true,SymbolType.Var,type,level);
-                instructions.add(new Instruction(Operation.loca,symbolTable.getSymbol(name).getStackOffset()));
+                if (level==0){
+                    instructions.add(new Instruction(Operation.globa,symbolTable.getSymbol(name).getStackOffset()));
+                }
+                else {
+                    instructions.add(new Instruction(Operation.loca,symbolTable.getSymbol(name).getStackOffset()));
+                }
                 expr.generate(instructions,symbolTable,level);
                 if (expr.valueType != type){
                     throw new AnalyseError();

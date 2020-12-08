@@ -26,8 +26,12 @@ public class AssignExpr extends Expr {
         if (symbolEntry.isConstant()){
             throw new AnalyseError();
         }
-
-        instructions.add(new Instruction(Operation.loca,symbolEntry.getStackOffset()));
+        if (symbolEntry.getLevel() == 0){
+            instructions.add(new Instruction(Operation.globa,symbolEntry.getStackOffset()));
+        }
+        else {
+            instructions.add(new Instruction(Operation.loca,symbolEntry.getStackOffset()));
+        }
         expr.generate(instructions,symbolTable,level);
         if (expr.valueType != symbolEntry.getValueType()){
             throw new AnalyseError();
