@@ -10,7 +10,7 @@ public class Expr {
     public ExprType exprType;
     public ValueType valueType;
 
-    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable) throws AnalyseError {
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level) throws AnalyseError {
     }
 
     @Override

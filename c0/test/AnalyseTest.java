@@ -1,10 +1,11 @@
 import analyser.Analyser;
+import analyser.function.Function;
 import analyser.program.Program;
-import analyser.statement.DeclStmt;
 import analyser.statement.Stmt;
-import analyser.symbol.SymbolEntry;
+import analyser.symbol.SymbolTable;
 import error.AnalyseError;
 import error.TokenizeError;
+import instruction.Instruction;
 import org.junit.Test;
 import tokenizer.TokenIterator;
 import tokenizer.Tokenizer;
@@ -12,6 +13,7 @@ import tokenizer.Tokenizer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AnalyseTest {
@@ -22,10 +24,10 @@ public class AnalyseTest {
         TokenIterator iterator = new TokenIterator(scanner);
         Tokenizer tokenizer = new Tokenizer(iterator);
         Analyser analyser = new Analyser(tokenizer);
-        Stmt stmt  =  analyser.AnalyseStmt();
-        stmt.generate(analyser.instructions,analyser.symbolTable);
-       analyser.AnalyseStmt().generate(analyser.instructions,analyser.symbolTable);
-        System.out.println(analyser.instructions);
+        Program program = analyser.AnalyseProgram();
+        program.generate();
+        System.out.println(((Function) (program.list.get(0))).instructions);
+        System.out.println(((Function) (program.list.get(0))).symbolTable);
     }
 
     @Test

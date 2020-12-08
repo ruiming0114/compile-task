@@ -22,9 +22,9 @@ public class OperatorExpr extends Expr {
     }
 
     @Override
-    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable) throws AnalyseError {
-        expr1.generate(instructions,symbolTable);
-        expr2.generate(instructions,symbolTable);
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level) throws AnalyseError {
+        expr1.generate(instructions,symbolTable,level);
+        expr2.generate(instructions,symbolTable,level);
         if (!expr1.valueType.equals(expr2.valueType)){
             System.out.println(expr1.valueType);
             System.out.println(expr2.valueType);

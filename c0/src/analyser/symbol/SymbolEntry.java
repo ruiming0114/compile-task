@@ -3,24 +3,30 @@ package analyser.symbol;
 import analyser.expr.ValueType;
 
 public class SymbolEntry {
+    String name;
     boolean isConstant;
     boolean isInitialized;
-    ValueType type;
+    SymbolType symbolType;
+    ValueType valueType;
     int stackOffset;
+    int level;
 
-    public SymbolEntry(boolean isConstant,boolean isInitialized,ValueType type,int stackOffset){
-        this.type = type;
+    public SymbolEntry(String name,boolean isConstant,boolean isInitialized,SymbolType symbolType,ValueType type,int stackOffset,int level){
+        this.name = name;
+        this.symbolType = symbolType;
+        this.level = level;
+        this.valueType = type;
         this.isConstant = isConstant;
         this.isInitialized = isInitialized;
         this.stackOffset = stackOffset;
     }
 
-    public ValueType getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(ValueType type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean isConstant() {
@@ -39,6 +45,22 @@ public class SymbolEntry {
         isInitialized = initialized;
     }
 
+    public SymbolType getSymbolType() {
+        return symbolType;
+    }
+
+    public void setSymbolType(SymbolType symbolType) {
+        this.symbolType = symbolType;
+    }
+
+    public ValueType getValueType() {
+        return valueType;
+    }
+
+    public void setValueType(ValueType valueType) {
+        this.valueType = valueType;
+    }
+
     public int getStackOffset() {
         return stackOffset;
     }
@@ -47,8 +69,17 @@ public class SymbolEntry {
         this.stackOffset = stackOffset;
     }
 
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
     @Override
     public String toString() {
-        return "isConstant: " + isConstant + ", isInitialized: " + isConstant  + ", type: "  + type + ", offset: " + stackOffset + "\n";
+        return "name:"+name+",isConstant:" + isConstant + ",isInitialized:" + isConstant  + ",symbolType:"  + symbolType +
+                ",valueType:" + valueType+",offset:" + stackOffset + ",level:" + level+ "\n";
     }
 }

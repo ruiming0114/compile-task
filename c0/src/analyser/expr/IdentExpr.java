@@ -17,11 +17,11 @@ public class IdentExpr extends Expr {
     }
 
     @Override
-    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable) throws AnalyseError {
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level) throws AnalyseError {
         int offset = symbolTable.getSymbol((String)ident).getStackOffset();
         instructions.add(new Instruction(Operation.loca,offset));
         instructions.add(new Instruction(Operation.load64));
-        this.valueType = symbolTable.getSymbol((String)ident).getType();
+        this.valueType = symbolTable.getSymbol((String)ident).getValueType();
     }
 
     @Override

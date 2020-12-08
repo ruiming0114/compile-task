@@ -11,6 +11,9 @@ import java.util.ArrayList;
 public class Program {
     public ArrayList<Object> list;
 
+    public ArrayList<Instruction> globalInstructions;
+    public SymbolTable globalSymbolTable;
+
     public Program(ArrayList<Object> list) throws AnalyseError {
         for (Object object : list){
             if (!(object instanceof DeclStmt || object instanceof Function)){
@@ -18,9 +21,19 @@ public class Program {
             }
         }
         this.list = list;
+        this.globalInstructions = new ArrayList<>();
+        this.globalSymbolTable = new SymbolTable();
     }
 
-    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable){
+    public void generate() throws AnalyseError {
+        for (Object obj:list){
+            if (obj instanceof DeclStmt){
+                ((DeclStmt) obj).generate(globalInstructions,globalSymbolTable,0);
+            }
+            else {
+                ((Function) obj).generate(globalSymbolTable);
+            }
+        }
     }
 
     @Override

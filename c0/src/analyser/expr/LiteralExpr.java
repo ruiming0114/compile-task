@@ -34,7 +34,7 @@ public class LiteralExpr extends Expr {
     }
 
     @Override
-    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable) throws AnalyseError {
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level) throws AnalyseError {
         switch (valueType){
             case Int:
                 instructions.add(new Instruction(Operation.push,value));

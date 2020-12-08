@@ -18,8 +18,8 @@ public class ExprStmt extends Stmt{
     }
 
     @Override
-    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable) throws AnalyseError {
-        expr.generate(instructions,symbolTable);
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level) throws AnalyseError {
+        expr.generate(instructions,symbolTable,level);
         if (expr.exprType == ExprType.Operator_Expr){
             instructions.add(new Instruction(Operation.popn,1));
         }

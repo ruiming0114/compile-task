@@ -3,6 +3,7 @@ package analyser.statement;
 import analyser.expr.Expr;
 import analyser.expr.ValueType;
 import analyser.symbol.SymbolTable;
+import analyser.symbol.SymbolType;
 import error.AnalyseError;
 import instruction.Instruction;
 import instruction.Operation;
@@ -54,15 +55,15 @@ public class DeclStmt extends Stmt {
     }
 
     @Override
-    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable) throws AnalyseError {
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level) throws AnalyseError {
         String name = (String) ident;
-        if (symbolTable.isContain(name)){
+        if (symbolTable.isContain(name,level)){
             throw new AnalyseError();
         }
         if(cons){
-            symbolTable.addSymbol(name,true,true,type);
+            symbolTable.addSymbol(name,true,true, SymbolType.Var,type,level);
             instructions.add(new Instruction(Operation.loca,symbolTable.getSymbol(name).getStackOffset()));
-            expr.generate(instructions,symbolTable);
+            expr.generate(instructions,symbolTable,level);
             if (expr.valueType != type){
                 throw new AnalyseError();
             }
@@ -70,12 +71,12 @@ public class DeclStmt extends Stmt {
         }
         else {
             if (expr == null){
-                symbolTable.addSymbol(name,false,false,type);
+                symbolTable.addSymbol(name,false,false,SymbolType.Var,type,level);
             }
             else {
-                symbolTable.addSymbol(name,false,true,type);
+                symbolTable.addSymbol(name,false,true,SymbolType.Var,type,level);
                 instructions.add(new Instruction(Operation.loca,symbolTable.getSymbol(name).getStackOffset()));
-                expr.generate(instructions,symbolTable);
+                expr.generate(instructions,symbolTable,level);
                 if (expr.valueType != type){
                     throw new AnalyseError();
                 }

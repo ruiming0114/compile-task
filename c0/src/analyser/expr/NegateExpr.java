@@ -17,7 +17,8 @@ public class NegateExpr extends Expr {
     }
 
     @Override
-    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable) throws AnalyseError {
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level) throws AnalyseError {
+        expr.generate(instructions,symbolTable,level);
         this.valueType = expr.valueType;
         instructions.add(new Instruction(Operation.negi));
     }

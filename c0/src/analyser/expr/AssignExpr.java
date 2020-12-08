@@ -20,15 +20,16 @@ public class AssignExpr extends Expr {
     }
 
     @Override
-    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable) throws AnalyseError {
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level) throws AnalyseError {
         this.valueType = ValueType.Void;
         SymbolEntry symbolEntry = symbolTable.getSymbol((String) ident);
         if (symbolEntry.isConstant()){
             throw new AnalyseError();
         }
+
         instructions.add(new Instruction(Operation.loca,symbolEntry.getStackOffset()));
-        expr.generate(instructions,symbolTable);
-        if (expr.valueType != symbolEntry.getType()){
+        expr.generate(instructions,symbolTable,level);
+        if (expr.valueType != symbolEntry.getValueType()){
             throw new AnalyseError();
         }
         instructions.add(new Instruction(Operation.store64));

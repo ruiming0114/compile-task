@@ -16,8 +16,8 @@ public class GroupExpr extends Expr {
     }
 
     @Override
-    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable) throws AnalyseError {
-        expr.generate(instructions,symbolTable);
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level) throws AnalyseError {
+        expr.generate(instructions,symbolTable,level);
         this.valueType = expr.valueType;
     }
 
