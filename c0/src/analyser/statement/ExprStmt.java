@@ -1,5 +1,6 @@
 package analyser.statement;
 
+import analyser.expr.CallExpr;
 import analyser.expr.Expr;
 import analyser.expr.ExprType;
 import analyser.symbol.SymbolTable;
@@ -20,7 +21,13 @@ public class ExprStmt extends Stmt{
     @Override
     public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level) throws AnalyseError {
         expr.generate(instructions,symbolTable,level);
-        if (expr.exprType == ExprType.Operator_Expr){
+        if (expr.exprType == ExprType.Call_Expr){
+            String name = (String)(((CallExpr)expr).ident);
+            if (name.equals("putint") || name.equals("putdouble") || name.equals("putchar") || name.equals("putstr") || name.equals("putln")){
+                return;
+            }
+        }
+        if (expr.exprType != ExprType.Assign_Expr ){
             instructions.add(new Instruction(Operation.popn,1));
         }
     }

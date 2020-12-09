@@ -1,6 +1,12 @@
 package analyser.statement;
 
 import analyser.expr.Expr;
+import analyser.symbol.SymbolTable;
+import error.AnalyseError;
+import instruction.Instruction;
+import instruction.Operation;
+
+import java.util.ArrayList;
 
 public class IfStmt extends Stmt {
     public Expr condition;
@@ -18,6 +24,23 @@ public class IfStmt extends Stmt {
         super(StmtType.If_Stmt);
         this.condition = condition;
         this.ifBlock = ifBlock;
+    }
+
+    @Override
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable, int level) throws AnalyseError {
+        condition.generate(instructions,symbolTable,level);
+        ArrayList<Instruction> tempIf = new ArrayList<>();
+        ArrayList<Instruction> tempElse = new ArrayList<>();
+        ifBlock.generate(tempIf,symbolTable,level);
+        instructions.add(new Instruction(Operation.brtrue,1));
+        instructions.add(new Instruction(Operation.br,tempIf.size()+1));
+        instructions.addAll(tempIf);
+        if (elseBlock!=null){
+            elseBlock.generate(tempElse,symbolTable,level);
+            instructions.add(new Instruction(Operation.br,tempElse.size()+1));
+            instructions.addAll(tempElse);
+        }
+        instructions.add(new Instruction(Operation.br,0));
     }
 
     @Override

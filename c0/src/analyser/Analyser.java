@@ -169,7 +169,7 @@ public class Analyser {
             expect(TokenType.Lparen);
             if (peekToken().getTokenType() == TokenType.Rparen){
                 expect(TokenType.Rparen);
-                return new CallExpr(token.getValue(),null);
+                return new CallExpr(token.getValue(),new ArrayList<Expr>());
             }
             else {
                 ArrayList<Expr> params = new ArrayList<>();

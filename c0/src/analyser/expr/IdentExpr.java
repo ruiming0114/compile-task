@@ -2,6 +2,7 @@ package analyser.expr;
 
 import analyser.symbol.SymbolEntry;
 import analyser.symbol.SymbolTable;
+import analyser.symbol.SymbolType;
 import error.AnalyseError;
 import instruction.Instruction;
 import instruction.Operation;
@@ -22,6 +23,9 @@ public class IdentExpr extends Expr {
         SymbolEntry symbolEntry = symbolTable.getSymbol((String)ident);
         if (symbolEntry.getLevel() == 0){
             instructions.add(new Instruction(Operation.globa,symbolEntry.getStackOffset()));
+        }
+        else if (symbolEntry.getSymbolType() == SymbolType.Params){
+            instructions.add(new Instruction(Operation.arga,symbolEntry.getStackOffset()));
         }
         else {
             instructions.add(new Instruction(Operation.loca,symbolEntry.getStackOffset()));

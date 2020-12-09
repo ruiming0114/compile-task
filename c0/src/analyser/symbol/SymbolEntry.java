@@ -10,6 +10,7 @@ public class SymbolEntry {
     ValueType valueType;
     int stackOffset;
     int level;
+    int funcNo;
 
     public SymbolEntry(String name,boolean isConstant,boolean isInitialized,SymbolType symbolType,ValueType type,int stackOffset,int level){
         this.name = name;
@@ -19,6 +20,18 @@ public class SymbolEntry {
         this.isConstant = isConstant;
         this.isInitialized = isInitialized;
         this.stackOffset = stackOffset;
+        this.funcNo = -1;
+    }
+
+    public SymbolEntry(String name,boolean isConstant,boolean isInitialized,SymbolType symbolType,ValueType type,int stackOffset,int level,int funcNo){
+        this.name = name;
+        this.symbolType = symbolType;
+        this.level = level;
+        this.valueType = type;
+        this.isConstant = isConstant;
+        this.isInitialized = isInitialized;
+        this.stackOffset = stackOffset;
+        this.funcNo = funcNo;
     }
 
     public String getName() {
@@ -77,9 +90,17 @@ public class SymbolEntry {
         this.level = level;
     }
 
+    public int getFuncNo() {
+        return funcNo;
+    }
+
+    public void setFuncNo(int funcNo) {
+        this.funcNo = funcNo;
+    }
+
     @Override
     public String toString() {
         return "name:"+name+",isConstant:" + isConstant + ",isInitialized:" + isConstant  + ",symbolType:"  + symbolType +
-                ",valueType:" + valueType+",offset:" + stackOffset + ",level:" + level+ "\n";
+                ",valueType:" + valueType+",offset:" + stackOffset + ",level:" + level+ ",FuncNo:" +funcNo+ "\n";
     }
 }
