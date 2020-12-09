@@ -7,14 +7,4 @@ FROM openjdk:8-alpine
 COPY ./* /app/
 # 编译程序
 WORKDIR /app/
-RUN javac *.java
-RUN javac ./analyser/*.java
-RUN javac ./error/*.java
-RUN javac ./instruction/*.java
-RUN javac ./tokenizer/*.java
-RUN javac ./analyser/expr/*.java
-RUN javac ./analyser/function/*.java
-RUN javac ./analyser/program/*.java
-RUN javac ./analyser/statement/*.java
-RUN javac ./analyser/symbol/*.java
-RUN javac ./analyser/util/*.java
+RUN javac -d . *.java
