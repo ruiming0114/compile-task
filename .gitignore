@@ -7,4 +7,5 @@
 *.iml
 out
 gen
-input.txt
+input
+output
