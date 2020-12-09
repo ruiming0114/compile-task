@@ -9,6 +9,7 @@ COPY ./analyser/expr/* /app/analyser/expr/
 COPY ./analyser/function/* /app/analyser/function/
 COPY ./analyser/program/* /app/analyser/program/
 COPY ./analyser/statement/* /app/analyser/statement/
+COPY ./analyser/symbol/* /app/analyser/symbol/
 COPY ./analyser/util/* /app/analyser/util/
 COPY ./analyser/Analyser.java /app/analyser/
 COPY ./error/* /app/error/
