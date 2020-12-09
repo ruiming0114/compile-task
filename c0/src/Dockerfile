@@ -4,8 +4,16 @@
 # 使用 Java 8
 FROM openjdk:8-alpine
 # 向容器内复制文件
-COPY ./* /app/
-COPY ./analyser/* /app/analyser/
+COPY ./Coder.java /app/
+COPY ./analyser/expr/* /app/analyser/expr/
+COPY ./analyser/function/* /app/analyser/function/
+COPY ./analyser/program/* /app/analyser/program/
+COPY ./analyser/statement/* /app/analyser/statement/
+COPY ./analyser/util/* /app/analyser/util/
+COPY ./analyser/Analyser.java /app/analyser/
+COPY ./error/* /app/error/
+COPY ./instruction/* /app/instruction/
+COPY ./tokenizer/* /app/tokenizer/
 # 编译程序
 WORKDIR /app/
 RUN javac -d . *.java
