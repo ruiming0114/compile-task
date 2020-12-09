@@ -5,6 +5,7 @@
 FROM openjdk:8-alpine
 # 向容器内复制文件
 COPY ./* /app/
+COPY ./analyser/* /app/analyser/
 # 编译程序
 WORKDIR /app/
 RUN javac -d . *.java
