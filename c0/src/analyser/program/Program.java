@@ -1,6 +1,9 @@
 package analyser.program;
 
+import analyser.expr.CallExpr;
+import analyser.expr.Expr;
 import analyser.function.Function;
+import analyser.function.FunctionParam;
 import analyser.statement.DeclStmt;
 import analyser.symbol.SymbolTable;
 import error.AnalyseError;
@@ -31,16 +34,15 @@ public class Program {
     public void generate() throws AnalyseError {
         for (Object obj:list){
             if (obj instanceof DeclStmt){
-                ((DeclStmt) obj).generate(globalInstructions,globalSymbolTable,0);
+                ((DeclStmt) obj).generate(globalInstructions,globalSymbolTable,0,0);
             }
             else {
                 ((Function) obj).generate(globalSymbolTable,funcNo);
                 funcNo++;
             }
         }
-        globalInstructions.add(new Instruction(Operation.stackalloc,1));
-        globalInstructions.add(new Instruction(Operation.call,globalSymbolTable.getFunc("main").getFuncNo()));
-        globalInstructions.add(new Instruction(Operation.popn,1));
+        CallExpr callMain = new CallExpr("main",new ArrayList<Expr>());
+        callMain.generate(globalInstructions,globalSymbolTable,0);
     }
 
     @Override

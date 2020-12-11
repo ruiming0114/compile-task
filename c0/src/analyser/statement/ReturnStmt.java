@@ -1,6 +1,8 @@
 package analyser.statement;
 
 import analyser.expr.Expr;
+import analyser.expr.ValueType;
+import analyser.symbol.SymbolEntry;
 import analyser.symbol.SymbolTable;
 import error.AnalyseError;
 import instruction.Instruction;
@@ -21,10 +23,15 @@ public class ReturnStmt extends Stmt {
     }
 
     @Override
-    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level) throws AnalyseError {
-        instructions.add(new Instruction(Operation.arga,0));
-        expr.generate(instructions,symbolTable,level);
-        instructions.add(new Instruction(Operation.store64));
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level,int funcNo) throws AnalyseError {
+        SymbolEntry Func = symbolTable.getFunc(funcNo);
+        if (Func.getValueType() != ValueType.Void) {
+            instructions.add(new Instruction(Operation.arga, 0));
+            if (expr != null) {
+                expr.generate(instructions, symbolTable, level);
+            }
+            instructions.add(new Instruction(Operation.store64));
+        }
         instructions.add(new Instruction(Operation.ret));
     }
 

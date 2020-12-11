@@ -13,7 +13,7 @@ public class Stmt {
         this.stmtType = stmtType;
     }
 
-    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level) throws AnalyseError {
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level,int funcNo) throws AnalyseError {
     }
 
     @Override

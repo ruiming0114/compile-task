@@ -1,4 +1,5 @@
 import analyser.Analyser;
+import analyser.function.Function;
 import analyser.program.Program;
 import analyser.util.NumberUtil;
 import error.AnalyseError;
@@ -20,12 +21,18 @@ public class AnalyseTest {
 
     @Test
     public void AnalyseTest() throws IOException, TokenizeError, AnalyseError {
-        Scanner scanner = new Scanner(new File("./c0/test/input.txt"));
+        Scanner scanner = new Scanner(new File("./c0/test/input"));
         TokenIterator iterator = new TokenIterator(scanner);
         Tokenizer tokenizer = new Tokenizer(iterator);
         Analyser analyser = new Analyser(tokenizer);
         Program program = analyser.AnalyseProgram();
         program.generate();
+        System.out.println(program.globalInstructions);
+        for (Object obj : program.list){
+            if (obj instanceof Function){
+                System.out.println(((Function) obj).instructions);
+            }
+        }
     }
 
     @Test

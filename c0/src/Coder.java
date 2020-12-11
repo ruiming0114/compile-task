@@ -41,12 +41,7 @@ public class Coder {
         ArrayList<SymbolEntry> list = program.globalSymbolTable.getGlobalSymbol();
         out.write(NumberUtil.int32(list.size()+1));
         for (SymbolEntry symbolEntry:list){
-            if (symbolEntry.isConstant()){
-                out.write(0x00);
-            }
-            else {
-                out.write(0x01);
-            }
+            out.write(0x00);
             if (symbolEntry.getSymbolType() == SymbolType.Func){
                 String name = symbolEntry.getName();
                 out.write(NumberUtil.int32(name.length()));
@@ -55,6 +50,12 @@ public class Coder {
                 }
             }
             else {
+                if (symbolEntry.isConstant()){
+                    out.write(0x00);
+                }
+                else {
+                    out.write(0x01);
+                }
                 if (symbolEntry.getValueType()!= ValueType.String){
                     out.write(new byte[]{0x00,0x00,0x00,0x08});
                 }

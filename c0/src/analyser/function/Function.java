@@ -49,7 +49,7 @@ public class Function {
             paramsOffset++;
         }
         symbolTable.addGlobalSymbol(globalSymbolTable);
-        body.generate(instructions,symbolTable,0);
+        body.generate(instructions,symbolTable,0,funcNo);
         for (SymbolEntry symbolEntry:symbolTable.table){
             if (symbolEntry.getSymbolType() == SymbolType.Params){
                 symbolEntry.setName("");

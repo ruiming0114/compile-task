@@ -55,7 +55,7 @@ public class DeclStmt extends Stmt {
     }
 
     @Override
-    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level) throws AnalyseError {
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level,int funcNo) throws AnalyseError {
         String name = (String) ident;
         if (symbolTable.isContain(name,level)){
             throw new AnalyseError();

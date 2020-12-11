@@ -92,11 +92,15 @@ public class CallExpr extends Expr {
                 this.valueType = ValueType.Void;
                 break;
             default:
-                instructions.add(new Instruction(Operation.stackalloc,1));
                 if (!symbolTable.isContain((String) ident,0)){
                     throw new AnalyseError();
                 }
                 SymbolEntry Func = symbolTable.getFunc((String) ident);
+                int return_slot = 0;
+                if (Func.getValueType() != ValueType.Void){
+                    return_slot = 1;
+                }
+                instructions.add(new Instruction(Operation.stackalloc,return_slot));
                 ArrayList<SymbolEntry> defineParams = symbolTable.getParams((String) ident);
                 if (defineParams.size()!=params.size()){
                     throw new AnalyseError();
@@ -109,6 +113,9 @@ public class CallExpr extends Expr {
                 }
                 instructions.add(new Instruction(Operation.call,Func.getFuncNo()));
                 this.valueType = Func.getValueType();
+                if (return_slot !=0){
+                    instructions.add(new Instruction(Operation.popn,return_slot));
+                }
         }
     }
 

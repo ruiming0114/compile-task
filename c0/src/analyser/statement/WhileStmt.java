@@ -20,11 +20,11 @@ public class WhileStmt extends Stmt {
     }
 
     @Override
-    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable, int level) throws AnalyseError {
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable, int level,int funcNo) throws AnalyseError {
         ArrayList<Instruction> conditionTemp = new ArrayList<>();
         ArrayList<Instruction> whileTemp = new ArrayList<>();
         condition.generate(conditionTemp,symbolTable,level);
-        whileBlock.generate(whileTemp,symbolTable,level);
+        whileBlock.generate(whileTemp,symbolTable,level,funcNo);
         instructions.add(new Instruction(Operation.br,0));
         instructions.addAll(conditionTemp);
         instructions.add(new Instruction(Operation.brtrue,1));

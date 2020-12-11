@@ -67,6 +67,16 @@ public class SymbolTable {
         return res;
     }
 
+    public SymbolEntry getFunc(int FuncNo){
+        SymbolEntry res = null;
+        for (SymbolEntry symbolEntry:table){
+            if (symbolEntry.getFuncNo() == FuncNo  && symbolEntry.getSymbolType() == SymbolType.Func){
+                res = symbolEntry;
+            }
+        }
+        return res;
+    }
+
     public ArrayList<SymbolEntry> getParams(String name){
         if (getFunc(name)==null){
             return null;

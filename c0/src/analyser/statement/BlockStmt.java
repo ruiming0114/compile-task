@@ -16,10 +16,10 @@ public class BlockStmt extends Stmt {
     }
 
     @Override
-    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable, int level) throws AnalyseError {
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable, int level,int funcNo) throws AnalyseError {
         level++;
         for(Stmt stmt:stmtList){
-            stmt.generate(instructions,symbolTable,level);
+            stmt.generate(instructions,symbolTable,level,funcNo);
         }
     }
 

@@ -27,16 +27,16 @@ public class IfStmt extends Stmt {
     }
 
     @Override
-    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable, int level) throws AnalyseError {
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable, int level,int funcNo) throws AnalyseError {
         condition.generate(instructions,symbolTable,level);
         ArrayList<Instruction> tempIf = new ArrayList<>();
         ArrayList<Instruction> tempElse = new ArrayList<>();
-        ifBlock.generate(tempIf,symbolTable,level);
+        ifBlock.generate(tempIf,symbolTable,level,funcNo);
         instructions.add(new Instruction(Operation.brtrue,1));
         instructions.add(new Instruction(Operation.br,tempIf.size()+1));
         instructions.addAll(tempIf);
         if (elseBlock!=null){
-            elseBlock.generate(tempElse,symbolTable,level);
+            elseBlock.generate(tempElse,symbolTable,level,funcNo);
             instructions.add(new Instruction(Operation.br,tempElse.size()+1));
             instructions.addAll(tempElse);
         }

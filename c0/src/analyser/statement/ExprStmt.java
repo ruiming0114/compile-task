@@ -19,7 +19,7 @@ public class ExprStmt extends Stmt{
     }
 
     @Override
-    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level) throws AnalyseError {
+    public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level,int funcNo) throws AnalyseError {
         expr.generate(instructions,symbolTable,level);
         if (expr.exprType == ExprType.Call_Expr){
             String name = (String)(((CallExpr)expr).ident);
