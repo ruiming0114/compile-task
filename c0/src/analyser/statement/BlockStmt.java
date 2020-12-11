@@ -27,4 +27,13 @@ public class BlockStmt extends Stmt {
     public String toString() {
         return super.toString() + "stmtList: " + stmtList;
     }
+
+    public boolean checkReturn(){
+        for (Stmt stmt:stmtList){
+            if (stmt.stmtType == StmtType.Return_Stmt){
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -7,6 +7,7 @@ import analyser.symbol.SymbolTable;
 import analyser.symbol.SymbolType;
 import error.AnalyseError;
 import instruction.Instruction;
+import instruction.Operation;
 
 import java.util.ArrayList;
 
@@ -56,6 +57,9 @@ public class Function {
                 symbolEntry.setLevel(0);
                 globalSymbolTable.table.add(symbolEntry);
             }
+        }
+        if (!body.checkReturn()){
+            instructions.add(new Instruction(Operation.ret));
         }
     }
 
