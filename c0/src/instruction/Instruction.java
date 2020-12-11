@@ -15,199 +15,136 @@ public class Instruction {
         this.value = value;
     }
 
-    public String generate(){
-        StringBuilder stringBuilder = new StringBuilder();
+    public byte[] byteAdd(byte one,byte[] bytes){
+        byte[] res = new byte[bytes.length+1];
+        res[0] = one;
+        System.arraycopy(bytes, 0, res, 1, bytes.length);
+        return res;
+    }
+
+    public byte[] generate(){
         switch (operation){
             case nop:
-                stringBuilder.append("00");
-                break;
+                return new byte[]{0x00};
             case push:
-                stringBuilder.append("01 ");
-                stringBuilder.append(NumberUtil.int64(value));
-                break;
+                return byteAdd((byte) 0x01,NumberUtil.int64(value));
             case pop:
-                stringBuilder.append("02");
-                break;
+                return new byte[]{0x02};
             case popn:
-                stringBuilder.append("03 ");
-                stringBuilder.append(NumberUtil.int32(value));
-                break;
+                return byteAdd((byte) 0x03,NumberUtil.int32(value));
             case dup:
-                stringBuilder.append("04");
-                break;
+                return new byte[]{0x04};
             case loca:
-                stringBuilder.append("0a ");
-                stringBuilder.append(NumberUtil.int32(value));
-                break;
+                return byteAdd((byte) 0x0a,NumberUtil.int32(value));
             case arga:
-                stringBuilder.append("0b ");
-                stringBuilder.append(NumberUtil.int32(value));
-                break;
+                return byteAdd((byte) 0x0b,NumberUtil.int32(value));
             case globa:
-                stringBuilder.append("0c ");
-                stringBuilder.append(NumberUtil.int32(value));
-                break;
+                return byteAdd((byte) 0x0c,NumberUtil.int32(value));
             case load8:
-                stringBuilder.append("10");
-                break;
+                return new byte[]{0x10};
             case load16:
-                stringBuilder.append("11");
-                break;
+                return new byte[]{0x11};
             case load32:
-                stringBuilder.append("12");
-                break;
+                return new byte[]{0x12};
             case load64:
-                stringBuilder.append("13");
-                break;
+                return new byte[]{0x13};
             case store8:
-                stringBuilder.append("14");
-                break;
+                return new byte[]{0x14};
             case store16:
-                stringBuilder.append("15");
-                break;
+                return new byte[]{0x15};
             case store32:
-                stringBuilder.append("16");
-                break;
+                return new byte[]{0x16};
             case store64:
-                stringBuilder.append("17");
-                break;
+                return new byte[]{0x17};
             case alloc:
-                stringBuilder.append("18");
-                break;
+                return new byte[]{0x18};
             case free:
-                stringBuilder.append("19");
-                break;
+                return new byte[]{0x19};
             case stackalloc:
-                stringBuilder.append("1a ");
-                stringBuilder.append(NumberUtil.int32(value));
-                break;
+                return byteAdd((byte) 0x1a,NumberUtil.int32(value));
             case addi:
-                stringBuilder.append("20");
-                break;
+                return new byte[]{0x20};
             case subi:
-                stringBuilder.append("21");
-                break;
+                return new byte[]{0x21};
             case muli:
-                stringBuilder.append("22");
-                break;
+                return new byte[]{0x22};
             case divi:
-                stringBuilder.append("23");
-                break;
+                return new byte[]{0x23};
             case addf:
-                stringBuilder.append("24");
-                break;
+                return new byte[]{0x24};
             case subf:
-                stringBuilder.append("25");
-                break;
+                return new byte[]{0x25};
             case mulf:
-                stringBuilder.append("26");
-                break;
+                return new byte[]{0x26};
             case divf:
-                stringBuilder.append("27");
-                break;
+                return new byte[]{0x27};
             case divu:
-                stringBuilder.append("28");
-                break;
+                return new byte[]{0x28};
             case shl:
-                stringBuilder.append("29");
-                break;
+                return new byte[]{0x29};
             case shr:
-                stringBuilder.append("2a");
-                break;
+                return new byte[]{0x2a};
             case and:
-                stringBuilder.append("2b");
-                break;
+                return new byte[]{0x2b};
             case or:
-                stringBuilder.append("2c");
-                break;
+                return new byte[]{0x2c};
             case xor:
-                stringBuilder.append("2d");
-                break;
+                return new byte[]{0x2d};
             case not:
-                stringBuilder.append("2e");
-                break;
+                return new byte[]{0x2e};
             case cmpi:
-                stringBuilder.append("30");
-                break;
+                return new byte[]{0x30};
             case cmpu:
-                stringBuilder.append("31");
-                break;
+                return new byte[]{0x31};
             case cmpf:
-                stringBuilder.append("32");
-                break;
+                return new byte[]{0x32};
             case negi:
-                stringBuilder.append("34");
-                break;
+                return new byte[]{0x34};
             case negf:
-                stringBuilder.append("35");
-                break;
+                return new byte[]{0x35};
             case itof:
-                stringBuilder.append("36");
-                break;
+                return new byte[]{0x36};
             case ftoi:
-                stringBuilder.append("37");
-                break;
+                return new byte[]{0x37};
             case shrl:
-                stringBuilder.append("38");
-                break;
+                return new byte[]{0x38};
             case setlt:
-                stringBuilder.append("39");
-                break;
+                return new byte[]{0x39};
             case setgt:
-                stringBuilder.append("3a");
-                break;
+                return new byte[]{0x3a};
             case br:
-                stringBuilder.append("41 ");
-                stringBuilder.append(NumberUtil.int32(value));
-                break;
+                return byteAdd((byte) 0x41,NumberUtil.int32(value));
             case brfalse:
-                stringBuilder.append("42 ");
-                stringBuilder.append(NumberUtil.int32(value));
-                break;
+                return byteAdd((byte) 0x42,NumberUtil.int32(value));
             case brtrue:
-                stringBuilder.append("43 ");
-                stringBuilder.append(NumberUtil.int32(value));
-                break;
+                return byteAdd((byte) 0x43,NumberUtil.int32(value));
             case call:
-                stringBuilder.append("48 ");
-                stringBuilder.append(NumberUtil.int32(value));
-                break;
+                return byteAdd((byte) 0x48,NumberUtil.int32(value));
             case ret:
-                stringBuilder.append("49");
-                break;
+                return new byte[]{0x49};
             case callname:
-                stringBuilder.append("4a ");
-                stringBuilder.append(NumberUtil.int32(value));
-                break;
+                return byteAdd((byte) 0x4a,NumberUtil.int32(value));
             case scani:
-                stringBuilder.append("50");
-                break;
+                return new byte[]{0x50};
             case scanc:
-                stringBuilder.append("51");
-                break;
+                return new byte[]{0x51};
             case scanf:
-                stringBuilder.append("52");
-                break;
+                return new byte[]{0x52};
             case printi:
-                stringBuilder.append("54");
-                break;
+                return new byte[]{0x54};
             case printc:
-                stringBuilder.append("55");
-                break;
+                return new byte[]{0x55};
             case printf:
-                stringBuilder.append("56");
-                break;
+                return new byte[]{0x56};
             case prints:
-                stringBuilder.append("57");
-                break;
+                return new byte[]{0x57};
             case println:
-                stringBuilder.append("58");
-                break;
+                return new byte[]{0x58};
             case panic:
-                stringBuilder.append("fe");
-                break;
+                return new byte[]{(byte) 0xfe};
+            default:
+                return null;
         }
-        return stringBuilder.toString();
     }
 
     @Override

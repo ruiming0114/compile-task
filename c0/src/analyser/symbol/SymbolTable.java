@@ -111,7 +111,7 @@ public class SymbolTable {
     public ArrayList<SymbolEntry> getGlobalSymbol(){
         ArrayList<SymbolEntry> res = new ArrayList<>();
         for (SymbolEntry symbolEntry: table){
-            if (symbolEntry.getLevel() == 0 && symbolEntry.getSymbolType() == SymbolType.Var){
+            if (symbolEntry.getLevel() == 0 && symbolEntry.getSymbolType() == SymbolType.Var || symbolEntry.getSymbolType() == SymbolType.Func){
                 res.add(symbolEntry);
             }
         }

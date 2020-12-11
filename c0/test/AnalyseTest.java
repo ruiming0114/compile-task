@@ -3,6 +3,8 @@ import analyser.program.Program;
 import analyser.util.NumberUtil;
 import error.AnalyseError;
 import error.TokenizeError;
+import instruction.Instruction;
+import instruction.Operation;
 import org.junit.Test;
 import tokenizer.TokenIterator;
 import tokenizer.Tokenizer;
@@ -11,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class AnalyseTest {
@@ -23,7 +26,6 @@ public class AnalyseTest {
         Analyser analyser = new Analyser(tokenizer);
         Program program = analyser.AnalyseProgram();
         program.generate();
-        System.out.println(Coder.global(program));
     }
 
     @Test
@@ -32,5 +34,7 @@ public class AnalyseTest {
     }
 
     @Test
-    public void OtherTest(){}
+    public void OtherTest(){
+        System.out.println(Arrays.toString(new Instruction(Operation.popn).byteAdd((byte) 0x01, new byte[]{0x02, 0x03})));
+    }
 }

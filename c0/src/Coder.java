@@ -1,9 +1,9 @@
-
 import analyser.Analyser;
 import analyser.expr.ValueType;
 import analyser.function.Function;
 import analyser.program.Program;
 import analyser.symbol.SymbolEntry;
+import analyser.symbol.SymbolType;
 import analyser.util.NumberUtil;
 import error.AnalyseError;
 import error.TokenizeError;
@@ -26,67 +26,74 @@ public class Coder {
         Program program = analyser.AnalyseProgram();
         program.generate();
 
-        FileWriter writer = new FileWriter(output);
-        writer.write("72 30 3b 3e");
-        writer.write("\n");
-        writer.write("00 00 00 01");
-        writer.write("\n");
-
-        writer.write(global(program));
-        writer.write("\n");
-        writer.write(func(program));
-        writer.close();
+        FileOutputStream out = new FileOutputStream(new File(output));
+        init(out);
+        global(program,out);
+        func(program,out);
+        out.close();
     }
 
-    public static String global(Program program){
-        StringBuilder stringBuilder = new StringBuilder();
+    public static void init(FileOutputStream out) throws IOException {
+        out.write(new byte[]{0x72,0x30,0x3b,0x3e,0x00,0x00,0x00,0x01});
+    }
+
+    public static void global(Program program,FileOutputStream out) throws IOException {
         ArrayList<SymbolEntry> list = program.globalSymbolTable.getGlobalSymbol();
-        stringBuilder.append(NumberUtil.int32(list.size()));
+        out.write(NumberUtil.int32(list.size()+1));
         for (SymbolEntry symbolEntry:list){
             if (symbolEntry.isConstant()){
-                stringBuilder.append("00").append("\n");
+                out.write(0x00);
             }
             else {
-                stringBuilder.append("01").append("\n");
+                out.write(0x01);
             }
-            if (symbolEntry.getValueType()!= ValueType.String){
-                stringBuilder.append("00 00 00 08").append("\n");
+            if (symbolEntry.getSymbolType() == SymbolType.Func){
+                String name = symbolEntry.getName();
+                out.write(NumberUtil.int32(name.length()));
+                for (char c :name.toCharArray()){
+                    out.write((byte)c);
+                }
             }
-            stringBuilder.append("00 00 00 00 00 00 00 00").append("\n");
+            else {
+                if (symbolEntry.getValueType()!= ValueType.String){
+                    out.write(new byte[]{0x00,0x00,0x00,0x08});
+                }
+                out.write(new byte[]{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00});
+            }
         }
-        return stringBuilder.toString();
+        out.write(0x01);
+        out.write(new byte[]{0x00,0x00,0x00,0x06});
+        out.write(new byte[]{0x5f,0x73,0x74,0x61,0x72,0x74});
     }
 
-    public static String func(Program program){
-        StringBuilder stringBuilder = new StringBuilder();
+    public static void func(Program program,FileOutputStream out) throws IOException {
         ArrayList<Function> list = new ArrayList<>();
         for (Object obj : program.list){
             if (obj instanceof Function){
                 list.add((Function)obj);
             }
         }
-        stringBuilder.append(NumberUtil.int32(list.size()+1)).append("\n");
-        stringBuilder.append("00 00 00 00\n");
-        stringBuilder.append("00 00 00 00\n");
-        stringBuilder.append("00 00 00 00\n");
-        stringBuilder.append("00 00 00 00\n");
-        stringBuilder.append(NumberUtil.int32(program.globalInstructions.size())).append('\n');
+        out.write(NumberUtil.int32(list.size()+1));
+        out.write(new byte[]{0x00,0x00,0x00,0x00});
+        out.write(new byte[]{0x00,0x00,0x00,0x00});
+        out.write(new byte[]{0x00,0x00,0x00,0x00});
+        out.write(new byte[]{0x00,0x00,0x00,0x00});
+        out.write(NumberUtil.int32(program.globalInstructions.size()));
         for (Instruction instruction : program.globalInstructions){
-            stringBuilder.append(instruction.generate()).append("\n");
+            out.write(instruction.generate());
         }
         int funcNo = 1;
         for (Function function:list){
-            stringBuilder.append(NumberUtil.int32(funcNo)).append("\n");
+            out.write(NumberUtil.int32(funcNo));
             funcNo++;
-            stringBuilder.append("00 00 00 01\n");
-            stringBuilder.append(NumberUtil.int32(function.paramList.size())).append("\n");
-            stringBuilder.append(NumberUtil.int32(function.symbolTable.getLocaCount())).append("\n");
-            stringBuilder.append(NumberUtil.int32(function.instructions.size())).append("\n");
+            out.write(new byte[]{0x00,0x00,0x00,0x01});
+            out.write(NumberUtil.int32(function.paramList.size()));
+            out.write(NumberUtil.int32(function.symbolTable.getLocaCount()));
+            out.write(NumberUtil.int32(function.instructions.size()));
             for (Instruction instruction : function.instructions){
-                stringBuilder.append(instruction.generate()).append("\n");
+                out.write(instruction.generate());
             }
         }
-        return stringBuilder.toString();
     }
 
     public static void main(String[] args) throws TokenizeError, AnalyseError, IOException {
