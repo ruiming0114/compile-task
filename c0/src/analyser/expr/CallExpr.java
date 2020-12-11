@@ -113,9 +113,6 @@ public class CallExpr extends Expr {
                 }
                 instructions.add(new Instruction(Operation.call,Func.getFuncNo()));
                 this.valueType = Func.getValueType();
-                if (return_slot !=0){
-                    instructions.add(new Instruction(Operation.popn,return_slot));
-                }
         }
     }
 
