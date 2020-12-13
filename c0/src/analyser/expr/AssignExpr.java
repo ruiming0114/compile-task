@@ -38,6 +38,8 @@ public class AssignExpr extends Expr {
         }
         expr.generate(instructions,symbolTable,level);
         if (expr.valueType != symbolEntry.getValueType()){
+            System.out.println(expr.valueType);
+            System.out.println(symbolEntry.getValueType());
             throw new AnalyseError();
         }
         instructions.add(new Instruction(Operation.store64));

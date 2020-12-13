@@ -52,7 +52,7 @@ public class CallExpr extends Expr {
                     throw new AnalyseError();
                 }
                 instructions.add(new Instruction(Operation.scanc));
-                this.valueType = ValueType.Char;
+                this.valueType = ValueType.Int;
                 break;
             case "putint":
                 if (params.size()!=1) {

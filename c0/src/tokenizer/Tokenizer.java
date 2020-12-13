@@ -172,7 +172,7 @@ public class Tokenizer {
                     throw new TokenizeError();
                 }
                 if(iterator.nextChar() == '\''){
-                    return new Token(TokenType.Char,res);
+                    return new Token(TokenType.Char, (int) res);
                 }
                 else {
                     throw new TokenizeError();

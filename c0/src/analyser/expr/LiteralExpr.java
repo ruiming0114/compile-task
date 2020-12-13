@@ -17,6 +17,7 @@ public class LiteralExpr extends Expr {
         this.value = value;
         switch (tokenType){
             case Uint:
+            case Char:
                 this.valueType = ValueType.Int;
                 break;
             case Double:
@@ -24,9 +25,6 @@ public class LiteralExpr extends Expr {
                 break;
             case String:
                 this.valueType = ValueType.String;
-                break;
-            case Char:
-                this.valueType = ValueType.Char;
                 break;
             default:
                 throw new AnalyseError();
