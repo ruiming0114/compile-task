@@ -52,6 +52,7 @@ public class SymbolTable {
         for (SymbolEntry symbolEntry:table){
             if (symbolEntry.getName().equals(name) && symbolEntry.getLevel()>level){
                 res = symbolEntry;
+                level = symbolEntry.getLevel();
             }
         }
         return res;

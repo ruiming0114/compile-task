@@ -21,11 +21,11 @@ public class IdentExpr extends Expr {
     @Override
     public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level) throws AnalyseError {
         SymbolEntry symbolEntry = symbolTable.getSymbol((String)ident);
-        if (symbolEntry.getLevel() == 0){
-            instructions.add(new Instruction(Operation.globa,symbolEntry.getStackOffset()));
-        }
-        else if (symbolEntry.getSymbolType() == SymbolType.Params){
+        if (symbolEntry.getSymbolType() == SymbolType.Params){
             instructions.add(new Instruction(Operation.arga,symbolEntry.getStackOffset()));
+        }
+        else if (symbolEntry.getLevel() == 0){
+            instructions.add(new Instruction(Operation.globa,symbolEntry.getStackOffset()));
         }
         else {
             instructions.add(new Instruction(Operation.loca,symbolEntry.getStackOffset()));
