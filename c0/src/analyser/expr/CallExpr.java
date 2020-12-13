@@ -11,12 +11,22 @@ import java.util.ArrayList;
 public class CallExpr extends Expr {
     public Object ident;
     public ArrayList<Expr> params;
+    public String str;
+    public int offset;
 
     public CallExpr(Object ident,ArrayList<Expr> params){
         super();
         super.exprType = ExprType.Call_Expr;
         this.ident = ident;
         this.params = params;
+    }
+
+    public CallExpr(Object ident,String str,int offset){
+        super();
+        super.exprType = ExprType.Call_Expr;
+        this.ident = ident;
+        this.str = str;
+        this.offset = offset;
     }
 
     @Override
@@ -82,6 +92,11 @@ public class CallExpr extends Expr {
                     throw new AnalyseError();
                 }
                 instructions.add(new Instruction(Operation.println));
+                this.valueType = ValueType.Void;
+                break;
+            case "putstr":
+                instructions.add(new Instruction(Operation.push,offset));
+                instructions.add(new Instruction(Operation.prints));
                 this.valueType = ValueType.Void;
                 break;
             default:

@@ -14,12 +14,13 @@ import java.util.ArrayList;
 
 public class Program {
     public ArrayList<Object> list;
+    public ArrayList<String> strArray;
 
     public ArrayList<Instruction> globalInstructions;
     public SymbolTable globalSymbolTable;
     int funcNo;
 
-    public Program(ArrayList<Object> list) throws AnalyseError {
+    public Program(ArrayList<Object> list,ArrayList<String> strArray) throws AnalyseError {
         for (Object object : list){
             if (!(object instanceof DeclStmt || object instanceof Function)){
                 throw new AnalyseError();
@@ -27,8 +28,9 @@ public class Program {
         }
         this.list = list;
         this.globalInstructions = new ArrayList<>();
-        this.globalSymbolTable = new SymbolTable();
+        this.globalSymbolTable = new SymbolTable(strArray.size());
         this.funcNo=1;
+        this.strArray = strArray;
     }
 
     public void generate() throws AnalyseError {

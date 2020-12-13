@@ -39,7 +39,15 @@ public class Coder {
 
     public static void global(Program program,FileOutputStream out) throws IOException {
         ArrayList<SymbolEntry> list = program.globalSymbolTable.getGlobalSymbol();
-        out.write(NumberUtil.int32(list.size()+1));
+        out.write(NumberUtil.int32(list.size()+program.strArray.size()+1));
+        for (String str : program.strArray){
+            out.write(0x00);
+            out.write(NumberUtil.int32(str.length()));
+            char[] temp = str.toCharArray();
+            for (char c:temp){
+                out.write(c);
+            }
+        }
         for (SymbolEntry symbolEntry:list){
             if (symbolEntry.getSymbolType() == SymbolType.Func){
                 out.write(0x00);

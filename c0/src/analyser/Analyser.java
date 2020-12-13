@@ -5,10 +5,8 @@ import analyser.function.Function;
 import analyser.function.FunctionParam;
 import analyser.program.Program;
 import analyser.statement.*;
-import analyser.symbol.SymbolTable;
 import error.AnalyseError;
 import error.TokenizeError;
-import instruction.Instruction;
 import tokenizer.Token;
 import tokenizer.TokenType;
 import tokenizer.Tokenizer;
@@ -18,6 +16,7 @@ import java.util.*;
 public class Analyser {
 
     Tokenizer tokenizer;
+    ArrayList<String> strArray;
 
     Token peekedToken = null;
 
@@ -53,6 +52,7 @@ public class Analyser {
 
     public Analyser(Tokenizer tokenizer){
         this.tokenizer = tokenizer;
+        this.strArray = new ArrayList<>();
     }
 
     private Token peekToken() throws TokenizeError {
@@ -172,14 +172,23 @@ public class Analyser {
                 return new CallExpr(token.getValue(),new ArrayList<Expr>());
             }
             else {
-                ArrayList<Expr> params = new ArrayList<>();
-                params.add(AnalyseExpr());
-                while (peekToken().getTokenType() == TokenType.Comma){
-                    expect(TokenType.Comma);
-                    params.add(AnalyseExpr());
+                if (peekToken().getTokenType() == TokenType.String){
+                    String str = (String)nextToken().getValue();
+                    expect(TokenType.Rparen);
+                    strArray.add(str);
+                    return new CallExpr(token.getValue(),str,strArray.size()-1);
                 }
-                expect(TokenType.Rparen);
-                return new CallExpr(token.getValue(),params);
+                else {
+                    ArrayList<Expr> params = new ArrayList<>();
+                    params.add(AnalyseExpr());
+                    while (peekToken().getTokenType() == TokenType.Comma){
+                        expect(TokenType.Comma);
+                        params.add(AnalyseExpr());
+                    }
+                    expect(TokenType.Rparen);
+                    return new CallExpr(token.getValue(),params);
+                }
+
             }
         }
         else {
@@ -374,7 +383,7 @@ public class Analyser {
                 throw new AnalyseError();
             }
         }
-        return new Program(list);
+        return new Program(list,strArray);
     }
 
     public void parse() throws TokenizeError, AnalyseError {

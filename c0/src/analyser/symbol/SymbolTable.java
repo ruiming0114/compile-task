@@ -15,6 +15,11 @@ public class SymbolTable {
         this.stackOffset = 0;
     }
 
+    public SymbolTable(int offset){
+        this.table = new ArrayList<>();
+        this.stackOffset = offset;
+    }
+
     private int getNextVariableOffset(){
         return stackOffset++;
     }
