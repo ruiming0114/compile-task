@@ -117,7 +117,7 @@ public class SymbolTable {
     public int getLocaCount(){
         int res = 0;
         for (SymbolEntry symbolEntry: table){
-            if (symbolEntry.getSymbolType() == SymbolType.Var && symbolEntry.getLevel() == 1){
+            if (symbolEntry.getSymbolType() == SymbolType.Var && symbolEntry.getLevel() >= 1){
                 res++;
             }
         }
