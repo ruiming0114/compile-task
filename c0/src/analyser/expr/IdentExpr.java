@@ -20,7 +20,7 @@ public class IdentExpr extends Expr {
 
     @Override
     public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level) throws AnalyseError {
-        SymbolEntry symbolEntry = symbolTable.getSymbol((String)ident);
+        SymbolEntry symbolEntry = symbolTable.getSymbol((String)ident,level);
         if (symbolEntry.getSymbolType() == SymbolType.Params){
             instructions.add(new Instruction(Operation.arga,symbolEntry.getStackOffset()));
         }

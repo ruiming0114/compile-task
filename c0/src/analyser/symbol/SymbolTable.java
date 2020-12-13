@@ -51,11 +51,11 @@ public class SymbolTable {
         }
     }
 
-    public SymbolEntry getSymbol(String name){
+    public SymbolEntry getSymbol(String name,int curLevel){
         SymbolEntry res = null;
         int level = -1;
         for (SymbolEntry symbolEntry:table){
-            if (symbolEntry.getName().equals(name) && symbolEntry.getLevel()>level){
+            if (symbolEntry.getName().equals(name) && symbolEntry.getLevel()>level && symbolEntry.getLevel() <= curLevel){
                 res = symbolEntry;
                 level = symbolEntry.getLevel();
             }

@@ -23,7 +23,7 @@ public class AssignExpr extends Expr {
     @Override
     public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable,int level) throws AnalyseError {
         this.valueType = ValueType.Void;
-        SymbolEntry symbolEntry = symbolTable.getSymbol((String) ident);
+        SymbolEntry symbolEntry = symbolTable.getSymbol((String) ident,level);
         if (symbolEntry.isConstant()){
             throw new AnalyseError();
         }
