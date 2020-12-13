@@ -19,6 +19,7 @@ public class BlockStmt extends Stmt {
     public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable, int level,int funcNo) throws AnalyseError {
         level++;
         for(Stmt stmt:stmtList){
+            stmt.isLoop = this.isLoop;
             stmt.generate(instructions,symbolTable,level,funcNo);
         }
     }

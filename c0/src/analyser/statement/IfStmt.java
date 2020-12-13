@@ -28,6 +28,7 @@ public class IfStmt extends Stmt {
 
     @Override
     public void generate(ArrayList<Instruction> instructions, SymbolTable symbolTable, int level,int funcNo) throws AnalyseError {
+        ifBlock.isLoop = this.isLoop;
         condition.generate(instructions,symbolTable,level);
         ArrayList<Instruction> tempIf = new ArrayList<>();
         ArrayList<Instruction> tempElse = new ArrayList<>();
@@ -36,6 +37,7 @@ public class IfStmt extends Stmt {
         instructions.add(new Instruction(Operation.br,tempIf.size()+1));
         instructions.addAll(tempIf);
         if (elseBlock!=null){
+            elseBlock.isLoop = this.isLoop;
             elseBlock.generate(tempElse,symbolTable,level,funcNo);
             instructions.add(new Instruction(Operation.br,tempElse.size()+1));
             instructions.addAll(tempElse);

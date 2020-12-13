@@ -24,5 +24,7 @@ public enum Operation {
     call,ret,callname,
     scani,scanf,scanc,
     printi,printf,printc,prints,println,
-    panic
+    panic,
+    break_flag,
+    continue_flag,
 }
