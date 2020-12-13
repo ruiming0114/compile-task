@@ -24,7 +24,6 @@ public class CallExpr extends Expr {
         String name = (String)ident;
         switch (name){
             case "getint":
-                instructions.add(new Instruction(Operation.stackalloc,1));
                 if (params.size()!=0) {
                     throw new AnalyseError();
                 }
@@ -32,7 +31,6 @@ public class CallExpr extends Expr {
                 this.valueType = ValueType.Int;
                 break;
             case "getdouble":
-                instructions.add(new Instruction(Operation.stackalloc,1));
                 if (params.size()!=0) {
                     throw new AnalyseError();
                 }
@@ -40,7 +38,6 @@ public class CallExpr extends Expr {
                 this.valueType = ValueType.Double;
                 break;
             case "getchar":
-                instructions.add(new Instruction(Operation.stackalloc,1));
                 if (params.size()!=0) {
                     throw new AnalyseError();
                 }
@@ -48,7 +45,6 @@ public class CallExpr extends Expr {
                 this.valueType = ValueType.Char;
                 break;
             case "putint":
-                instructions.add(new Instruction(Operation.stackalloc,0));
                 if (params.size()!=1) {
                     throw new AnalyseError();
                 }
@@ -60,7 +56,6 @@ public class CallExpr extends Expr {
                 this.valueType = ValueType.Void;
                 break;
             case "putdouble":
-                instructions.add(new Instruction(Operation.stackalloc,0));
                 if (params.size()!=1) {
                     throw new AnalyseError();
                 }
@@ -72,7 +67,6 @@ public class CallExpr extends Expr {
                 this.valueType = ValueType.Void;
                 break;
             case "putchar":
-                instructions.add(new Instruction(Operation.stackalloc,0));
                 if (params.size()!=1) {
                     throw new AnalyseError();
                 }
@@ -84,7 +78,6 @@ public class CallExpr extends Expr {
                 this.valueType = ValueType.Void;
                 break;
             case "putln":
-                instructions.add(new Instruction(Operation.stackalloc,0));
                 if (params.size()!=0) {
                     throw new AnalyseError();
                 }

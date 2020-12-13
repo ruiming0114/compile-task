@@ -41,8 +41,8 @@ public class Coder {
         ArrayList<SymbolEntry> list = program.globalSymbolTable.getGlobalSymbol();
         out.write(NumberUtil.int32(list.size()+1));
         for (SymbolEntry symbolEntry:list){
-            out.write(0x00);
             if (symbolEntry.getSymbolType() == SymbolType.Func){
+                out.write(0x00);
                 String name = symbolEntry.getName();
                 out.write(NumberUtil.int32(name.length()));
                 for (char c :name.toCharArray()){
