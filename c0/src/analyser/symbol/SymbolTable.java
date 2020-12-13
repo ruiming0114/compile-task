@@ -84,7 +84,7 @@ public class SymbolTable {
         int funcNo = getFunc(name).getFuncNo();
         ArrayList<SymbolEntry> res = new ArrayList<>();
         for (SymbolEntry symbolEntry:table){
-            if (symbolEntry.getSymbolType() == SymbolType.Params && symbolEntry.getFuncNo() == funcNo){
+            if (symbolEntry.getSymbolType() == SymbolType.Params && symbolEntry.getFuncNo() == funcNo && !res.contains(symbolEntry)){
                 res.add(symbolEntry);
             }
         }
