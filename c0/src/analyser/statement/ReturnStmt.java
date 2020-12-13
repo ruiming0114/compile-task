@@ -27,8 +27,12 @@ public class ReturnStmt extends Stmt {
         SymbolEntry Func = symbolTable.getFunc(funcNo);
         if (Func.getValueType() != ValueType.Void) {
             instructions.add(new Instruction(Operation.arga, 0));
-            if (expr != null) {
-                expr.generate(instructions, symbolTable, level);
+            if (expr == null) {
+                throw new AnalyseError();
+            }
+            expr.generate(instructions, symbolTable, level);
+            if (expr.valueType != Func.getValueType()){
+                throw new AnalyseError();
             }
             instructions.add(new Instruction(Operation.store64));
         }
