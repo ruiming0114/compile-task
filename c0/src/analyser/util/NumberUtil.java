@@ -3,17 +3,22 @@ package analyser.util;
 public class NumberUtil {
 
     public static byte[] int64(Object value) {
-        int i = (Integer) value;
-        byte[] targets = new byte[8];
-        targets[0] = 0;
-        targets[1] = 0;
-        targets[2] = 0;
-        targets[3] = 0;
-        targets[7] = (byte) (i & 0xFF);
-        targets[6] = (byte) (i >> 8 & 0xFF);
-        targets[5] = (byte) (i >> 16 & 0xFF);
-        targets[4] = (byte) (i >> 24 & 0xFF);
-        return targets;
+        try{
+            int i = (Integer) value;
+            byte[] targets = new byte[8];
+            targets[0] = 0;
+            targets[1] = 0;
+            targets[2] = 0;
+            targets[3] = 0;
+            targets[7] = (byte) (i & 0xFF);
+            targets[6] = (byte) (i >> 8 & 0xFF);
+            targets[5] = (byte) (i >> 16 & 0xFF);
+            targets[4] = (byte) (i >> 24 & 0xFF);
+            return targets;
+        }catch (ClassCastException e){
+            return u64(value);
+        }
+
     }
 
     public static byte[] int32(Object value) {

@@ -260,7 +260,8 @@ public class Tokenizer {
             int res = Integer.parseInt(sb1.toString());
             return new Token(TokenType.Uint,res);
         }catch (Exception e){
-            throw new TokenizeError();
+            long res = Long.parseLong(sb1.toString());
+            return new Token(TokenType.Uint,res);
         }
     }
 

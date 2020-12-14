@@ -20,18 +20,23 @@ public class AnalyseTest {
 
     @Test
     public void AnalyserTest() throws IOException, TokenizeError, AnalyseError {
-        Scanner scanner = new Scanner(new File("./c0/test/input"));
-        TokenIterator iterator = new TokenIterator(scanner);
-        Tokenizer tokenizer = new Tokenizer(iterator);
-        Analyser analyser = new Analyser(tokenizer);
-        Program program = analyser.AnalyseProgram();
-        program.generate();
-        System.out.println(program.globalInstructions);
-        for (Object obj : program.list){
-            if (obj instanceof Function){
-                System.out.println(((Function) obj).instructions);
+        try{
+            Scanner scanner = new Scanner(new File("./c0/test/input"));
+            TokenIterator iterator = new TokenIterator(scanner);
+            Tokenizer tokenizer = new Tokenizer(iterator);
+            Analyser analyser = new Analyser(tokenizer);
+            Program program = analyser.AnalyseProgram();
+            program.generate();
+            System.out.println(program.globalInstructions);
+            for (Object obj : program.list){
+                if (obj instanceof Function){
+                    System.out.println(((Function) obj).instructions);
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
     }
 
     @Test

@@ -18,7 +18,6 @@ public class TokenIterator {
     public void readAll(){
         while (scanner.hasNext()){
             String res = scanner.nextLine();
-            System.out.println(res);
             char[] temp = (res+'\n').toCharArray();
             for (char c : temp){
                 buffer.add(c);
