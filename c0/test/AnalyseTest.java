@@ -4,23 +4,22 @@ import analyser.program.Program;
 import analyser.util.NumberUtil;
 import error.AnalyseError;
 import error.TokenizeError;
-import instruction.Instruction;
-import instruction.Operation;
+
 import org.junit.Test;
 import tokenizer.TokenIterator;
 import tokenizer.Tokenizer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class AnalyseTest {
 
     @Test
-    public void AnalyseTest() throws IOException, TokenizeError, AnalyseError {
+    public void AnalyserTest() throws IOException, TokenizeError, AnalyseError {
         Scanner scanner = new Scanner(new File("./c0/test/input"));
         TokenIterator iterator = new TokenIterator(scanner);
         Tokenizer tokenizer = new Tokenizer(iterator);
@@ -41,7 +40,7 @@ public class AnalyseTest {
     }
 
     @Test
-    public void OtherTest(){
-        System.out.println(Arrays.toString(new Instruction(Operation.popn).byteAdd((byte) 0x01, new byte[]{0x02, 0x03})));
+    public void OtherTest() throws FileNotFoundException, TokenizeError, AnalyseError {
+        System.out.println(Arrays.toString(NumberUtil.u64(4608083138725491507L)));
     }
 }

@@ -27,4 +27,5 @@ public enum Operation {
     panic,
     break_flag,
     continue_flag,
+    pushf,
 }

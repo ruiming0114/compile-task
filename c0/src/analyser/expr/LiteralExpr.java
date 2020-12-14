@@ -36,6 +36,10 @@ public class LiteralExpr extends Expr {
         switch (valueType){
             case Int:
                 instructions.add(new Instruction(Operation.push,value));
+                break;
+            case Double:
+                instructions.add(new Instruction(Operation.pushf,Double.doubleToLongBits((double)value)));
+                break;
         }
     }
 

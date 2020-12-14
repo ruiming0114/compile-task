@@ -33,46 +33,96 @@ public class OperatorExpr extends Expr {
         this.valueType = expr1.valueType;
         switch (operator){
             case Plus:
-                instructions.add(new Instruction(Operation.addi));
+                if (this.valueType == ValueType.Int){
+                    instructions.add(new Instruction(Operation.addi));
+                }
+                else {
+                    instructions.add(new Instruction(Operation.addf));
+                }
                 break;
             case Minus:
-                instructions.add(new Instruction(Operation.subi));
+                if (this.valueType == ValueType.Int){
+                    instructions.add(new Instruction(Operation.subi));
+                }
+                else {
+                    instructions.add(new Instruction(Operation.subf));
+                }
                 break;
             case Mul:
-                instructions.add(new Instruction(Operation.muli));
+                if (this.valueType == ValueType.Int){
+                    instructions.add(new Instruction(Operation.muli));
+                }
+                else {
+                    instructions.add(new Instruction(Operation.mulf));
+                }
                 break;
             case Div:
-                instructions.add(new Instruction(Operation.divi));
+                if (this.valueType == ValueType.Int){
+                    instructions.add(new Instruction(Operation.divi));
+                }
+                else {
+                    instructions.add(new Instruction(Operation.divf));
+                }
                 break;
             case Gt:
-                instructions.add(new Instruction(Operation.cmpi));
+                if (this.valueType == ValueType.Int){
+                    instructions.add(new Instruction(Operation.cmpi));
+                }
+                else {
+                    instructions.add(new Instruction(Operation.cmpf));
+                }
                 instructions.add(new Instruction(Operation.setgt));
                 this.valueType = ValueType.Bool;
                 break;
             case Lt:
-                instructions.add(new Instruction(Operation.cmpi));
+                if (this.valueType == ValueType.Int){
+                    instructions.add(new Instruction(Operation.cmpi));
+                }
+                else {
+                    instructions.add(new Instruction(Operation.cmpf));
+                }
                 instructions.add(new Instruction(Operation.setlt));
                 this.valueType = ValueType.Bool;
                 break;
             case Ge:
-                instructions.add(new Instruction(Operation.cmpi));
+                if (this.valueType == ValueType.Int){
+                    instructions.add(new Instruction(Operation.cmpi));
+                }
+                else {
+                    instructions.add(new Instruction(Operation.cmpf));
+                }
                 instructions.add(new Instruction(Operation.setlt));
                 instructions.add(new Instruction(Operation.not));
                 this.valueType = ValueType.Bool;
                 break;
             case Le:
-                instructions.add(new Instruction(Operation.cmpi));
+                if (this.valueType == ValueType.Int){
+                    instructions.add(new Instruction(Operation.cmpi));
+                }
+                else {
+                    instructions.add(new Instruction(Operation.cmpf));
+                }
                 instructions.add(new Instruction(Operation.setgt));
                 instructions.add(new Instruction(Operation.not));
                 this.valueType = ValueType.Bool;
                 break;
             case Eq:
-                instructions.add(new Instruction(Operation.cmpi));
+                if (this.valueType == ValueType.Int){
+                    instructions.add(new Instruction(Operation.cmpi));
+                }
+                else {
+                    instructions.add(new Instruction(Operation.cmpf));
+                }
                 instructions.add(new Instruction(Operation.not));
                 this.valueType = ValueType.Bool;
                 break;
             case Neq:
-                instructions.add(new Instruction(Operation.cmpi));
+                if (this.valueType == ValueType.Int){
+                    instructions.add(new Instruction(Operation.cmpi));
+                }
+                else {
+                    instructions.add(new Instruction(Operation.cmpf));
+                }
                 this.valueType = ValueType.Bool;
                 break;
         }

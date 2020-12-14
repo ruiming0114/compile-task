@@ -20,19 +20,20 @@ public class Analyser {
 
     Token peekedToken = null;
 
-    ArrayList<TokenType> operatorList = new ArrayList<>(Arrays.asList(TokenType.Plus,TokenType.Minus,TokenType.Mul,TokenType.Div,TokenType.Eq,TokenType.Neq,TokenType.Lt,TokenType.Gt,TokenType.Le,TokenType.Ge));
+    ArrayList<TokenType> operatorList = new ArrayList<>(Arrays.asList(TokenType.Plus,TokenType.Minus,TokenType.Mul,TokenType.Div,TokenType.Eq,TokenType.Neq,TokenType.Lt,TokenType.Gt,TokenType.Le,TokenType.Ge,TokenType.As));
 
     public static int[][] matrix = {
-            {1,1,-1,-1,1,1,1,1,1,1},
-            {1,1,-1,-1,1,1,1,1,1,1},
-            {1,1,1,1,1,1,1,1,1,1},
-            {1,1,1,1,1,1,1,1,1,1},
-            {-1,-1,-1,-1,1,1,1,1,1,1},
-            {-1,-1,-1,-1,1,1,1,1,1,1},
-            {-1,-1,-1,-1,1,1,1,1,1,1},
-            {-1,-1,-1,-1,1,1,1,1,1,1},
-            {-1,-1,-1,-1,1,1,1,1,1,1},
-            {-1,-1,-1,-1,1,1,1,1,1,1},
+            {1,1,-1,-1,1,1,1,1,1,1,-1},
+            {1,1,-1,-1,1,1,1,1,1,1,-1},
+            {1,1,1,1,1,1,1,1,1,1,-1},
+            {1,1,1,1,1,1,1,1,1,1,-1},
+            {-1,-1,-1,-1,1,1,1,1,1,1,-1},
+            {-1,-1,-1,-1,1,1,1,1,1,1,-1},
+            {-1,-1,-1,-1,1,1,1,1,1,1,-1},
+            {-1,-1,-1,-1,1,1,1,1,1,1,-1},
+            {-1,-1,-1,-1,1,1,1,1,1,1,-1},
+            {-1,-1,-1,-1,1,1,1,1,1,1,-1},
+            {1,1,1,1,1,1,1,1,1,1,1}
     };
 
     public static Map<TokenType,Integer> location = new HashMap<>();
@@ -48,6 +49,7 @@ public class Analyser {
         location.put(TokenType.Le,7);
         location.put(TokenType.Eq,8);
         location.put(TokenType.Neq,9);
+        location.put(TokenType.As,10);
     }
 
     public Analyser(Tokenizer tokenizer){
@@ -101,8 +103,15 @@ public class Analyser {
                 }
                 else if (matrix[location.get(operatorStack.peek())][location.get(peek.getTokenType())] == 1){
                     while (!operatorStack.isEmpty() && matrix[location.get(operatorStack.peek())][location.get(peek.getTokenType())] == 1){
-                        OperatorExpr expr = new OperatorExpr(exprStack.pop(),operatorStack.pop(),exprStack.pop());
-                        exprStack.push(expr);
+                        if(operatorStack.peek()==TokenType.As){
+                            AsExpr expr = new AsExpr(exprStack.pop(),exprStack.pop());
+                            operatorStack.pop();
+                            exprStack.push(expr);
+                        }
+                        else {
+                            OperatorExpr expr = new OperatorExpr(exprStack.pop(),operatorStack.pop(),exprStack.pop());
+                            exprStack.push(expr);
+                        }
                     }
                     operatorStack.push(nextToken().getTokenType());
                 }
@@ -114,8 +123,15 @@ public class Analyser {
             }
             else {
                 while (!operatorStack.isEmpty()){
-                    OperatorExpr expr = new OperatorExpr(exprStack.pop(),operatorStack.pop(),exprStack.pop());
-                    exprStack.push(expr);
+                    if(operatorStack.peek()==TokenType.As){
+                        AsExpr expr = new AsExpr(exprStack.pop(),exprStack.pop());
+                        operatorStack.pop();
+                        exprStack.push(expr);
+                    }
+                    else {
+                        OperatorExpr expr = new OperatorExpr(exprStack.pop(),operatorStack.pop(),exprStack.pop());
+                        exprStack.push(expr);
+                    }
                 }
                 return exprStack.pop();
             }

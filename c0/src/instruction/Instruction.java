@@ -28,6 +28,8 @@ public class Instruction {
                 return new byte[]{0x00};
             case push:
                 return byteAdd((byte) 0x01,NumberUtil.int64(value));
+            case pushf:
+                return byteAdd((byte) 0x01,NumberUtil.u64(value));
             case pop:
                 return new byte[]{0x02};
             case popn:
